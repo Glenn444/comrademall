@@ -72,6 +72,10 @@ export default function SelectSchool() {
             <Button><Link href="/sign-up">Register</Link></Button>
         </p>
       </div>
+      <div className="fixed bottom-0 lg:left-[50%] left-16 text-center">
+        <p>For any Inquiries or issues</p>
+        <p className="text-green-600">Call/Whatsapp: 0712341106</p>
+      </div>
     </>
   );
 }

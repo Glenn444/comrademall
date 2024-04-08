@@ -47,6 +47,7 @@ async function getProductsData({params,searchParams}:Params) {
       id: true,
       price: true,
       categoryName: true,
+      categoryFilter:true,
       User: {
         select: {
           name: true,
@@ -87,7 +88,7 @@ async function ShowItems({searchParams, params}:Params) {
             {ProductsData.map((item) => (
               <ProductListingCart
                 key={item.id}
-                category={item.categoryName as string}
+                category={item.categoryFilter as string}
                 imagePath={item.photo as string}
                 price={item.price as number}
                 ownerName={item.User?.name}
