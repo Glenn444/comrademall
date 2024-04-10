@@ -6,6 +6,8 @@ import { auth, currentUser } from "@clerk/nextjs";
 import { MyFormFields } from "./components/FormUser";
 import getSchoolId from "./lib/getSchoolId";
 import { utapi } from "./server/uploadthing"
+import ShortUniqueId from 'short-unique-id';
+const uid = new ShortUniqueId({ length: 6 });
 
 const formProduct = z.object({
   categoryfilter: z.string(),
@@ -130,7 +132,7 @@ export async function CreateProduct() {
         categoryName: "",
         categoryFilter: "",
         description: "",
-        key:""
+        key: uid.rnd()
       },
     });
 
