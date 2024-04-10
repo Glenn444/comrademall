@@ -67,10 +67,6 @@ export default function SelectSchool() {
             </>
           )}
         </div>
-        <p className="py-12">
-          To Start selling on ComradeMall
-            <Button><Link href="/sign-up">Register</Link></Button>
-        </p>
       </div>
       <div className="fixed bottom-0 lg:left-[50%] left-16 text-center">
         <p>For any Inquiries or issues</p>

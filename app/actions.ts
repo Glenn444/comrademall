@@ -138,8 +138,12 @@ export async function CreateProduct() {
 
     return redirect(`/${schoolId?.schoolsId}/products/${data.id}/category`);
   } else if (!data.addedCategory) {
+    return redirect(`/${schoolId?.schoolsId}/products/${data.id}/category`);
+  }else if(data.addedCategory && !data.price){
     return redirect(`/${schoolId?.schoolsId}/products/${data.id}/product`);
-  } else {
+  }else if(data.addedCategory && data.price && !data.photo){
+    return redirect(`/${schoolId?.schoolsId}/products/${data.id}/upload`);
+  }else {
     return redirect(`/${schoolId?.schoolsId}/products/${data.id}/category`);
   }
 }
