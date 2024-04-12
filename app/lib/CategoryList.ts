@@ -46,6 +46,11 @@ export const categoryItems: iAppProps[] = [
       },
       {
         id:4,
+        name:"mirror",
+        title:"Mirror"
+      },
+      {
+        id:5,
         name:"wardrobe",
         title:"Wardrobe/Rack"
       }

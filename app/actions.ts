@@ -232,7 +232,8 @@ export async function ProductImage(prodId:string, imageUrl:string | undefined,im
       },
       data:{
         key:imagekey,
-        photo:imageUrl
+        photo:imageUrl,
+        addedPhoto:true
       }
     })
     return redirect(`/${schoolId?.schoolsId}`);
