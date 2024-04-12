@@ -5,8 +5,8 @@ import { redirect } from "next/navigation";
 import { auth, currentUser } from "@clerk/nextjs";
 import { MyFormFields } from "./components/FormUser";
 import getSchoolId from "./lib/getSchoolId";
-import { utapi } from "./server/uploadthing"
-import ShortUniqueId from 'short-unique-id';
+import { utapi } from "./server/uploadthing";
+import ShortUniqueId from "short-unique-id";
 const uid = new ShortUniqueId({ length: 6 });
 
 const formProduct = z.object({
@@ -14,6 +14,15 @@ const formProduct = z.object({
   price: z.string(),
 });
 type MyFormProducts = z.infer<typeof formProduct>;
+
+type Info = {
+  public_id: string;
+};
+
+type UploadEvent = {
+  event: "success";
+  info: Info;
+};
 export async function createComradeBNB({ userId }: { userId: string }) {
   const schoolId = await getSchoolId();
   const data = await prisma.home.findFirst({
@@ -102,11 +111,10 @@ export async function CreateUserDetails(values: MyFormFields) {
 
   const data = await prisma.user.create({
     data: {
-      id:userId ?? "",
+      id: userId ?? "",
       phone: phonenumber,
       schoolsId: schoolId,
       name: name,
-
     },
   });
   if (data) {
@@ -132,30 +140,31 @@ export async function CreateProduct() {
         categoryName: "",
         categoryFilter: "",
         description: "",
-        key: uid.rnd()
+        key: uid.rnd(),
       },
     });
 
     return redirect(`/${schoolId?.schoolsId}/products/${data.id}/category`);
   } else if (!data.addedCategory) {
     return redirect(`/${schoolId?.schoolsId}/products/${data.id}/category`);
-  }else if(data.addedCategory && !data.price){
+  } else if (data.addedCategory && !data.price) {
     return redirect(`/${schoolId?.schoolsId}/products/${data.id}/product`);
-  }else if(data.addedCategory && data.price && !data.photo){
+  } else if (data.addedCategory && data.price && !data.photo) {
     return redirect(`/${schoolId?.schoolsId}/products/${data.id}/upload`);
-  }else {
+  } else {
     return redirect(`/${schoolId?.schoolsId}/products/${data.id}/category`);
   }
 }
 
-export async function CreateProductsDetails(values: MyFormProducts,val:string) {
-
-  
+export async function CreateProductsDetails(
+  values: MyFormProducts,
+  val: string
+) {
   const schoolId = await getSchoolId();
   const { userId } = auth();
   const price = values.price;
   const categoryfilter = values.categoryfilter as string;
-  
+
   const data = await prisma.products.update({
     where: {
       id: val,
@@ -187,20 +196,13 @@ export async function createProductCategory(formData: FormData) {
   return redirect(`/${schoolId?.schoolsId}/products/${productId}/product`);
 }
 
-export const imageDelete = async(imageKey: string)=>{
-  try {
-      const res = await utapi.deleteFiles(imageKey);
-      if(res.success){
-          await prisma.products.delete({
-            where:{
-              key:imageKey
-            }
-          })
-      }
-  } catch (error) {
-      console.log("Eror deleting");
-  }
-}
+export const imageDelete = async (imageKey: string | null) => {
+  await prisma.products.delete({
+    where: {
+      photo: imageKey ?? undefined,
+    },
+  });
+};
 export async function createSchool(value: string) {
   const { userId } = auth();
   if (userId === "user_2efq0YY6PS7L76scYJR4Jzf1cQ8") {
@@ -213,20 +215,18 @@ export async function createSchool(value: string) {
   }
 }
 
-export async function ProductImage(prodId:string, imageUrl:string | undefined,imagekey:string | undefined) {
-  if(imageUrl && imagekey ){
-   
+export async function ProductImage(prodId: string, publicId: UploadEvent) {
+  if (publicId.info.public_id) {
     const schoolId = await getSchoolId();
     await prisma.products.update({
-      where:{
-        id:prodId
+      where: {
+        id: prodId,
       },
-      data:{
-        key:imagekey,
-        photo:imageUrl,
-        addedPhoto:true
-      }
-    })
+      data: {
+        photo: publicId.info.public_id,
+        addedPhoto: true,
+      },
+    });
     return redirect(`/${schoolId?.schoolsId}`);
   }
 }

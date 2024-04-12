@@ -13,7 +13,7 @@ export default  function Dasboard() {
     const { data, error, isLoading,mutate } = useSWR('Products', getProductsData)
     const [deleting, setDeleting] = useState(false);
    
-    async function deleteImage(imageKey: string) {
+    async function deleteImage(imageKey: string | null) {
       setDeleting(true);
 
       await imageDelete(imageKey);
@@ -37,7 +37,7 @@ export default  function Dasboard() {
             />
             <Button
               variant="destructive"
-              onClick={() => deleteImage(item.key)}
+              onClick={() => deleteImage(item.photo)}
               disabled={deleting}
             >
               {deleting ? "Please wait deleting..." : "Delete"}

@@ -40,7 +40,7 @@ model Home {
 
 model Products {
   id     String  @id @default(uuid())
-  photo  String?
+  photo  String? @unique
   price  Int?
   User   User?   @relation(fields: [userId], references: [id],onDelete: Cascade)
   userId String?
