@@ -133,8 +133,8 @@ export async function CreateProduct() {
     },
   });
 
-  if (data === null) {
-    const data = await prisma.products.create({
+  if (data?.addedCategory && data.addedPhoto && data.categoryFilter && data.price) {
+    const data1 = await prisma.products.create({
       data: {
         userId: userId,
         categoryName: "",
@@ -144,15 +144,13 @@ export async function CreateProduct() {
       },
     });
 
-    return redirect(`/${schoolId?.schoolsId}/products/${data.id}/category`);
-  } else if (!data.addedCategory) {
-    return redirect(`/${schoolId?.schoolsId}/products/${data.id}/category`);
+    return redirect(`/${schoolId?.schoolsId}/products/${data1.id}/category`);
+  } else if (!data?.addedCategory) {
+    return redirect(`/${schoolId?.schoolsId}/products/${data?.id}/category`);
   } else if (data.addedCategory && !data.price) {
     return redirect(`/${schoolId?.schoolsId}/products/${data.id}/product`);
-  } else if (data.addedCategory && data.price && !data.photo) {
+  } else if (data.addedCategory && data.price && !data.addedPhoto) {
     return redirect(`/${schoolId?.schoolsId}/products/${data.id}/upload`);
-  } else {
-    return redirect(`/${schoolId?.schoolsId}/products/${data.id}/category`);
   }
 }
 
