@@ -24,13 +24,11 @@ export default function ProductListingCart({
   return (
     <div className="flex flex-col my-2">
       <div className="relative h-72">
-        <CldImage
-          width="500"
-          height="500"
-          src= {imagePath}
-          sizes="100vw"
-          alt="Product Image"
-          className="rounded-lg object-cover"
+        <Image
+          src={`${imagePath}`}
+          alt="Image of Product"
+          fill
+          className="rounded-lg h-full object-cover"
         />
       </div>
       <Link href="" className="mt-2 grid grid-cols-2">

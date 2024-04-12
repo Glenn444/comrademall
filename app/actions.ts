@@ -196,13 +196,20 @@ export async function createProductCategory(formData: FormData) {
   return redirect(`/${schoolId?.schoolsId}/products/${productId}/product`);
 }
 
-export const imageDelete = async (imageKey: string | null) => {
-  await prisma.products.delete({
-    where: {
-      photo: imageKey ?? undefined,
-    },
-  });
-};
+export const imageDelete = async(imageKey: string)=>{
+  try {
+      const res = await utapi.deleteFiles(imageKey);
+      if(res.success){
+          await prisma.products.delete({
+            where:{
+              key:imageKey
+            }
+          })
+      }
+  } catch (error) {
+      console.log("Eror deleting");
+  }
+}
 export async function createSchool(value: string) {
   const { userId } = auth();
   if (userId === "user_2efq0YY6PS7L76scYJR4Jzf1cQ8") {
@@ -215,18 +222,21 @@ export async function createSchool(value: string) {
   }
 }
 
-export async function ProductImage(prodId: string, publicId: UploadEvent) {
-  if (publicId.info.public_id) {
+export async function ProductImage(prodId:string, imageUrl:string | undefined,imagekey:string | undefined) {
+  if(imageUrl && imagekey ){
+   
     const schoolId = await getSchoolId();
     await prisma.products.update({
-      where: {
-        id: prodId,
+      where:{
+        id:prodId
       },
-      data: {
-        photo: publicId.info.public_id,
-        addedPhoto: true,
-      },
-    });
+      data:{
+        key:imagekey,
+        photo:imageUrl
+      }
+    })
     return redirect(`/${schoolId?.schoolsId}`);
   }
+
 }
+
