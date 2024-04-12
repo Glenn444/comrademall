@@ -21,6 +21,7 @@ async function getProductsData({params,searchParams}:Params) {
     categoryName: searchParams?.filter,
     categoryFilter: searchParams?.item,
     addedCategory: true,
+    addedPhoto:true
     
   };
 

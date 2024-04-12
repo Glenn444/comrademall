@@ -50,6 +50,7 @@ model Products {
   categoryFilter String
   description String
   key  String @unique
+  addedPhoto Boolean @default(false)
 
 }
 
