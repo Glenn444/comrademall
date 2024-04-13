@@ -124,16 +124,14 @@ export async function CreateUserDetails(values: MyFormFields) {
 export async function CreateProduct() {
   const schoolId = await getSchoolId();
   const { userId } = auth();
-  const data = await prisma.products.findFirst({
-    where: {
-      userId: userId,
-    },
-    orderBy: {
-      createdAt: "desc",
-    },
-  });
-
-  if (data?.addedCategory && data.addedPhoto && data.categoryFilter && data.price) {
+  // const data = await prisma.products.findFirst({
+  //   where: {
+  //     userId: userId,
+  //   },
+  //   orderBy: {
+  //     createdAt: "desc",
+  //   },
+  // });
     const data1 = await prisma.products.create({
       data: {
         userId: userId,
@@ -145,14 +143,7 @@ export async function CreateProduct() {
     });
 
     return redirect(`/${schoolId?.schoolsId}/products/${data1.id}/category`);
-  } else if (!data?.addedCategory) {
-    return redirect(`/${schoolId?.schoolsId}/products/${data?.id}/category`);
-  } else if (data.addedCategory && !data.price) {
-    return redirect(`/${schoolId?.schoolsId}/products/${data.id}/product`);
-  } else if (data.addedCategory && data.price && !data.addedPhoto) {
-    return redirect(`/${schoolId?.schoolsId}/products/${data.id}/upload`);
   }
-}
 
 export async function CreateProductsDetails(
   values: MyFormProducts,
