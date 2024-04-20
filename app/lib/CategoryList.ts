@@ -53,6 +53,11 @@ export const categoryItems: iAppProps[] = [
         id:5,
         name:"wardrobe",
         title:"Wardrobe/Rack"
+      },
+      {
+        id:6,
+        name:"laundrybasket",
+        title:"Laundry Basket"
       }
     ],
     imageUrl:furniture
